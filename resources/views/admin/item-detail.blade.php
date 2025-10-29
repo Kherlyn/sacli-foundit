@@ -192,10 +192,9 @@
                                 <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
                                     @foreach ($item->images as $image)
                                         <div class="relative group">
-                                            <img src="{{ Storage::url($image->filename) }}"
-                                                alt="{{ $item->title }}"
+                                            <img src="{{ $image->url }}" alt="{{ $item->title }}"
                                                 class="w-full h-32 object-cover rounded-xl cursor-pointer hover:opacity-75 transition-all duration-200 shadow-sm hover:shadow-md"
-                                                onclick="openImageModal('{{ Storage::url($image->filename) }}', '{{ $item->title }}')">
+                                                onclick="openImageModal('{{ $image->url }}', '{{ $item->title }}')">
                                             <div
                                                 class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-all duration-200 rounded-xl flex items-center justify-center">
                                                 <x-icon name="magnifying-glass-plus" size="xl"
@@ -262,7 +261,7 @@
                                         <div
                                             class="flex items-center space-x-3 p-3 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors duration-200">
                                             @if ($similarItem->images->count() > 0)
-                                                <img src="{{ Storage::url($similarItem->images->first()->filename) }}"
+                                                <img src="{{ $similarItem->images->first()->url }}"
                                                     alt="{{ $similarItem->title }}"
                                                     class="w-12 h-12 object-cover rounded-lg shadow-sm">
                                             @else

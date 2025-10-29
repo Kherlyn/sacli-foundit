@@ -193,8 +193,7 @@
                                 class="flex items-center space-x-4 p-3 hover:bg-gray-50 rounded-xl transition-colors duration-200 border-b border-gray-100 last:border-b-0">
                                 <div class="flex-shrink-0">
                                     @if ($item->images->count() > 0)
-                                        <img src="{{ Storage::url($item->images->first()->filename) }}"
-                                            alt="{{ $item->title }}"
+                                        <img src="{{ $item->images->first()->url }}" alt="{{ $item->title }}"
                                             class="w-12 h-12 object-cover rounded-lg shadow-sm">
                                     @else
                                         <div class="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center">

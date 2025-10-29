@@ -68,6 +68,17 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::delete('/items/{item}/images/{imageId}', 'removeImage')->name('items.remove-image');
         Route::delete('/items/{item}', 'destroy')->name('items.destroy');
     });
+
+    // Notification routes
+    Route::controller(\App\Http\Controllers\NotificationController::class)
+        ->prefix('notifications')
+        ->name('notifications.')
+        ->group(function () {
+            Route::get('/', 'index')->name('index');
+            Route::post('/{id}/read', 'markAsRead')->name('read');
+            Route::post('/read-all', 'markAllAsRead')->name('read-all');
+            Route::delete('/{id}', 'destroy')->name('destroy');
+        });
 });
 
 // ============================================================================

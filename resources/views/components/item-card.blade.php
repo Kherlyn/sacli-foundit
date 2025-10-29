@@ -6,7 +6,7 @@
     <div
         class="h-48 bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center relative overflow-hidden">
         @if ($item->images && $item->images->count() > 0)
-            <img src="{{ asset('storage/' . $item->images->first()->filename) }}" alt="{{ $item->title }}"
+            <img src="{{ $item->images->first()->url }}" alt="{{ $item->title }}"
                 class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
         @else
             <x-icon name="photo" size="xl" class="text-gray-400" />

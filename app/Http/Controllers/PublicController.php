@@ -37,6 +37,7 @@ class PublicController extends Controller
       'location' => 'nullable|string|max:255',
       'start_date' => 'nullable|date',
       'end_date' => 'nullable|date|after_or_equal:start_date',
+      'sort' => 'nullable|in:newest,oldest,relevance',
     ]);
 
     $query = $request->input('query');
@@ -45,6 +46,7 @@ class PublicController extends Controller
     $location = $request->input('location');
     $startDate = $request->input('start_date');
     $endDate = $request->input('end_date');
+    $sort = $request->input('sort', 'newest');
 
     $items = $this->itemRepository->searchItems(
       $query,
@@ -53,6 +55,7 @@ class PublicController extends Controller
       $location,
       $startDate,
       $endDate,
+      $sort,
       12 // items per page
     );
 
@@ -97,6 +100,7 @@ class PublicController extends Controller
       'location' => 'nullable|string|max:255',
       'start_date' => 'nullable|date',
       'end_date' => 'nullable|date|after_or_equal:start_date',
+      'sort' => 'nullable|in:newest,oldest,relevance,category,location',
     ]);
 
     $categoryId = $request->input('category');
@@ -104,6 +108,7 @@ class PublicController extends Controller
     $location = $request->input('location');
     $startDate = $request->input('start_date');
     $endDate = $request->input('end_date');
+    $sort = $request->input('sort', 'newest');
 
     $items = $this->itemRepository->searchItems(
       null, // no text query for browsing
@@ -112,6 +117,7 @@ class PublicController extends Controller
       $location,
       $startDate,
       $endDate,
+      $sort,
       12 // items per page
     );
 

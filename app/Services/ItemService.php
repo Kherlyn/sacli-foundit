@@ -103,7 +103,8 @@ class ItemService
   {
     $item->markAsVerified($adminNotes);
 
-    // TODO: Send notification to user about verification
+    // Send notification to user about verification
+    $item->user->notify(new \App\Notifications\ItemVerifiedNotification($item));
 
     return $item->load(['category', 'user', 'images']);
   }
@@ -115,7 +116,8 @@ class ItemService
   {
     $item->markAsRejected($adminNotes);
 
-    // TODO: Send notification to user about rejection
+    // Send notification to user about rejection
+    $item->user->notify(new \App\Notifications\ItemRejectedNotification($item));
 
     return $item->load(['category', 'user', 'images']);
   }
@@ -421,6 +423,9 @@ class ItemService
       throw new \InvalidArgumentException('Invalid status provided.');
     }
 
+    // Get items before updating to send notifications
+    $items = Item::with('user')->whereIn('id', $itemIds)->get();
+
     $updateData = [
       'status' => $status,
       'admin_notes' => $adminNotes,
@@ -432,7 +437,22 @@ class ItemService
       $updateData['resolved_at'] = now();
     }
 
-    return Item::whereIn('id', $itemIds)->update($updateData);
+    $count = Item::whereIn('id', $itemIds)->update($updateData);
+
+    // Send notifications to users
+    if ($status === 'verified') {
+      foreach ($items as $item) {
+        $item->refresh(); // Refresh to get updated data
+        $item->user->notify(new \App\Notifications\ItemVerifiedNotification($item));
+      }
+    } elseif ($status === 'rejected') {
+      foreach ($items as $item) {
+        $item->refresh();
+        $item->user->notify(new \App\Notifications\ItemRejectedNotification($item));
+      }
+    }
+
+    return $count;
   }
 
   /**

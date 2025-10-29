@@ -177,43 +177,55 @@
             <div class="flex-1">
                 <!-- Sort and View Options -->
                 <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 gap-4">
-                    <div class="flex items-center gap-4">
-                        <span class="text-sm text-gray-600 flex items-center gap-1.5">
-                            <x-icon name="document-text" size="sm" class="text-gray-400" />
+                    <div class="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4">
+                        <span class="text-sm font-medium text-gray-700 flex items-center gap-1.5">
+                            <x-icon name="document-text" size="sm" class="text-gray-500" />
                             {{ isset($items) ? $items->total() : 0 }} items found
                         </span>
                         <div class="flex items-center gap-2">
-                            <span class="text-sm text-gray-600 flex items-center gap-1.5">
-                                <x-icon name="arrows-up-down" size="sm" class="text-gray-400" />
+                            <span class="text-sm font-medium text-gray-700 flex items-center gap-1.5">
+                                <x-icon name="arrows-up-down" size="sm" class="text-gray-500" />
                                 Sort by:
                             </span>
-                            <select name="sort" onchange="updateSort(this.value)"
-                                class="px-3 py-1.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-sacli-green-500 focus:border-sacli-green-500 outline-none text-sm">
-                                <option value="newest" {{ request('sort', 'newest') === 'newest' ? 'selected' : '' }}>
-                                    Newest First</option>
-                                <option value="oldest" {{ request('sort') === 'oldest' ? 'selected' : '' }}>Oldest
-                                    First</option>
-                                <option value="category" {{ request('sort') === 'category' ? 'selected' : '' }}>By
-                                    Category</option>
-                                <option value="location" {{ request('sort') === 'location' ? 'selected' : '' }}>By
-                                    Location</option>
-                            </select>
+                            <div class="relative">
+                                <select name="sort" onchange="updateSort(this.value)"
+                                    class="appearance-none bg-white pl-3 pr-10 py-2 border border-gray-300 rounded-lg shadow-sm hover:border-sacli-green-400 focus:ring-2 focus:ring-sacli-green-500 focus:border-sacli-green-500 outline-none text-sm font-medium text-gray-700 cursor-pointer transition-all duration-200">
+                                    <option value="newest"
+                                        {{ request('sort', 'newest') === 'newest' ? 'selected' : '' }}>
+                                        🕐 Newest First</option>
+                                    <option value="oldest" {{ request('sort') === 'oldest' ? 'selected' : '' }}>
+                                        🕑 Oldest First</option>
+                                    <option value="category" {{ request('sort') === 'category' ? 'selected' : '' }}>
+                                        📁 By Category</option>
+                                    <option value="location" {{ request('sort') === 'location' ? 'selected' : '' }}>
+                                        📍 By Location</option>
+                                </select>
+                                <div
+                                    class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-500">
+                                    <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M19 9l-7 7-7-7"></path>
+                                    </svg>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
                     <!-- View Toggle -->
-                    <div class="flex items-center gap-2">
-                        <span class="text-sm text-gray-600">View:</span>
-                        <button onclick="toggleView('grid')" id="grid-view-btn"
-                            class="p-2 rounded-lg bg-sacli-green-600 text-white hover:bg-sacli-green-700 transition-all duration-200"
-                            title="Grid View">
-                            <x-icon name="squares-2x2" size="sm" />
-                        </button>
-                        <button onclick="toggleView('list')" id="list-view-btn"
-                            class="p-2 rounded-lg bg-gray-200 text-gray-600 hover:bg-gray-300 transition-all duration-200"
-                            title="List View">
-                            <x-icon name="bars-3" size="sm" />
-                        </button>
+                    <div class="flex items-center gap-3">
+                        <span class="text-sm font-medium text-gray-700">View:</span>
+                        <div class="inline-flex rounded-lg border border-gray-300 bg-white shadow-sm">
+                            <button onclick="toggleView('grid')" id="grid-view-btn"
+                                class="p-2 rounded-l-lg bg-sacli-green-600 text-white hover:bg-sacli-green-700 transition-all duration-200"
+                                title="Grid View">
+                                <x-icon name="squares-2x2" size="sm" />
+                            </button>
+                            <button onclick="toggleView('list')" id="list-view-btn"
+                                class="p-2 rounded-r-lg bg-white text-gray-600 hover:bg-gray-50 transition-all duration-200 border-l border-gray-300"
+                                title="List View">
+                                <x-icon name="bars-3" size="sm" />
+                            </button>
+                        </div>
                     </div>
                 </div>
 
@@ -278,15 +290,15 @@
             if (view === 'grid') {
                 container.className = 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6';
                 gridBtn.className =
-                    'p-2 rounded-lg bg-sacli-green-600 text-white hover:bg-sacli-green-700 transition-all duration-200';
+                    'p-2 rounded-l-lg bg-sacli-green-600 text-white hover:bg-sacli-green-700 transition-all duration-200';
                 listBtn.className =
-                'p-2 rounded-lg bg-gray-200 text-gray-600 hover:bg-gray-300 transition-all duration-200';
+                    'p-2 rounded-r-lg bg-white text-gray-600 hover:bg-gray-50 transition-all duration-200 border-l border-gray-300';
             } else {
                 container.className = 'space-y-4';
                 gridBtn.className =
-                'p-2 rounded-lg bg-gray-200 text-gray-600 hover:bg-gray-300 transition-all duration-200';
+                    'p-2 rounded-l-lg bg-white text-gray-600 hover:bg-gray-50 transition-all duration-200';
                 listBtn.className =
-                    'p-2 rounded-lg bg-sacli-green-600 text-white hover:bg-sacli-green-700 transition-all duration-200';
+                    'p-2 rounded-r-lg bg-sacli-green-600 text-white hover:bg-sacli-green-700 transition-all duration-200 border-l border-gray-300';
             }
         }
     </script>

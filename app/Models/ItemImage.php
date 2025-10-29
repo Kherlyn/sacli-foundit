@@ -24,4 +24,20 @@ class ItemImage extends Model
     {
         return $this->belongsTo(Item::class);
     }
+
+    /**
+     * Get the full storage path for the image.
+     */
+    public function getPathAttribute(): string
+    {
+        return 'items/' . $this->item_id . '/' . $this->filename;
+    }
+
+    /**
+     * Get the full URL for the image.
+     */
+    public function getUrlAttribute(): string
+    {
+        return asset('storage/' . $this->path);
+    }
 }

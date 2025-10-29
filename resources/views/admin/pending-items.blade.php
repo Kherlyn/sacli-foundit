@@ -72,8 +72,7 @@
                                         <!-- Item Image -->
                                         <div class="flex-shrink-0">
                                             @if ($item->images->count() > 0)
-                                                <img src="{{ Storage::url($item->images->first()->filename) }}"
-                                                    alt="{{ $item->title }}"
+                                                <img src="{{ $item->images->first()->url }}" alt="{{ $item->title }}"
                                                     class="w-20 h-20 object-cover rounded-xl shadow-sm">
                                             @else
                                                 <div

@@ -30,6 +30,7 @@ class ItemRepository
     ?string $location = null,
     ?string $startDate = null,
     ?string $endDate = null,
+    string $sort = 'newest',
     int $perPage = 15
   ): LengthAwarePaginator {
     $builder = Item::public()
@@ -55,8 +56,38 @@ class ItemRepository
       $builder->dateRange($startDate, $endDate);
     }
 
-    return $builder->orderBy('created_at', 'desc')
-      ->paginate($perPage);
+    // Apply sorting
+    switch ($sort) {
+      case 'oldest':
+        $builder->orderBy('created_at', 'asc');
+        break;
+      case 'relevance':
+        // If there's a search query, order by relevance (search score)
+        // Otherwise fall back to newest
+        if ($query) {
+          $builder->orderByRaw('CASE WHEN name LIKE ? THEN 1 WHEN description LIKE ? THEN 2 ELSE 3 END', ["%{$query}%", "%{$query}%"])
+            ->orderBy('created_at', 'desc');
+        } else {
+          $builder->orderBy('created_at', 'desc');
+        }
+        break;
+      case 'category':
+        $builder->join('categories', 'items.category_id', '=', 'categories.id')
+          ->orderBy('categories.name', 'asc')
+          ->orderBy('items.created_at', 'desc')
+          ->select('items.*');
+        break;
+      case 'location':
+        $builder->orderBy('location', 'asc')
+          ->orderBy('created_at', 'desc');
+        break;
+      case 'newest':
+      default:
+        $builder->orderBy('created_at', 'desc');
+        break;
+    }
+
+    return $builder->paginate($perPage);
   }
 
   /**

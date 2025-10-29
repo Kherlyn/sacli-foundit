@@ -115,8 +115,7 @@
                                 <div class="mt-2 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
                                     @foreach ($item->images as $image)
                                         <div class="relative group">
-                                            <img src="{{ Storage::url('items/' . $item->id . '/' . $image->filename) }}"
-                                                alt="Item image"
+                                            <img src="{{ $image->url }}" alt="Item image"
                                                 class="w-full h-24 object-cover rounded-lg border border-gray-200">
                                             <form action="{{ route('items.remove-image', [$item, $image->id]) }}"
                                                 method="POST" class="absolute -top-2 -right-2">

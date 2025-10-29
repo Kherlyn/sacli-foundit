@@ -37,8 +37,7 @@
                             <div class="relative">
                                 <!-- Main Image -->
                                 <div class="aspect-w-16 aspect-h-12 bg-gray-200">
-                                    <img id="main-image"
-                                        src="{{ asset('storage/' . $item->images->first()->filename) }}"
+                                    <img id="main-image" src="{{ $item->images->first()->url }}"
                                         alt="{{ $item->title }}" class="w-full h-96 object-cover">
                                 </div>
 
@@ -73,8 +72,7 @@
                                             <button onclick="showImage({{ $index }})"
                                                 class="flex-shrink-0 w-16 h-16 rounded-lg overflow-hidden border-2 {{ $index === 0 ? 'border-sacli-green-600' : 'border-gray-200' }} hover:border-sacli-green-600 transition duration-150 ease-in-out"
                                                 data-thumbnail="{{ $index }}">
-                                                <img src="{{ asset('storage/' . $image->filename) }}"
-                                                    alt="Thumbnail {{ $index + 1 }}"
+                                                <img src="{{ $image->url }}" alt="Thumbnail {{ $index + 1 }}"
                                                     class="w-full h-full object-cover">
                                             </button>
                                         @endforeach

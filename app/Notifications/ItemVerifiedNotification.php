@@ -33,7 +33,7 @@ class ItemVerifiedNotification extends Notification implements ShouldQueue
             return [];
         }
 
-        return ['mail'];
+        return ['database', 'mail'];
     }
 
     /**
