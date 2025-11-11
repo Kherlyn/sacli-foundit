@@ -174,6 +174,8 @@ class ItemService
       status: $filters['status'] ?? null,
       type: $filters['type'] ?? null,
       categoryId: $filters['category_id'] ?? null,
+      course: $filters['course'] ?? null,
+      year: $filters['year'] ?? null,
       perPage: $perPage
     );
   }

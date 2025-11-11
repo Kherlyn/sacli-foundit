@@ -19,20 +19,20 @@
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-2 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')" icon="home">
-                        {{ __('Dashboard') }}
+                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs(
+                        'dashboard',
+                        'items.my-items',
+                        'items.show',
+                        'items.edit',
+                        'items.view',
+                    )" icon="squares-2x2">
+                        {{ __('My Items') }}
                     </x-nav-link>
                     <x-nav-link :href="route('home')" :active="request()->routeIs('home')" icon="magnifying-glass">
-                        {{ __('Search Items') }}
+                        {{ __('Search') }}
                     </x-nav-link>
                     <x-nav-link :href="route('browse')" :active="request()->routeIs('browse')" icon="squares-2x2">
                         {{ __('Browse') }}
-                    </x-nav-link>
-                    <x-nav-link :href="route('items.create')" :active="request()->routeIs('items.create')" icon="plus-circle">
-                        {{ __('Report Item') }}
-                    </x-nav-link>
-                    <x-nav-link :href="route('items.my-items')" :active="request()->routeIs('items.my-items', 'items.show', 'items.edit')" icon="folder">
-                        {{ __('My Items') }}
                     </x-nav-link>
 
                     @if (Auth::user()->isAdmin())
@@ -44,8 +44,15 @@
                 </div>
             </div>
 
-            <!-- Settings Dropdown -->
-            <div class="hidden sm:flex sm:items-center sm:ms-6 gap-2">
+            <!-- Right Side: Submit Button & Settings -->
+            <div class="hidden sm:flex sm:items-center sm:ms-6 gap-3">
+                <!-- Submit Button -->
+                <a href="{{ route('items.create') }}"
+                    class="inline-flex items-center gap-2 px-4 py-2 bg-sacli-green-600 hover:bg-sacli-green-700 text-white text-sm font-medium rounded-lg shadow-sm hover:shadow-md transition-all duration-200 ease-in-out">
+                    <x-icon name="plus-circle" size="sm" />
+                    {{ __('Submit') }}
+                </a>
+
                 <!-- Notification Bell -->
                 <x-notification-bell />
 
@@ -102,30 +109,38 @@
     </div>
 
     <!-- Responsive Navigation Menu -->
-    <div id="mobile-menu" :class="{ 'block': open, 'hidden': !open }" class="hidden sm:hidden">
+    <div id="mobile-menu" :class="{ 'block': open, 'hidden': !open }"
+        class="hidden sm:hidden transition-all duration-200 ease-in-out">
         <div class="pt-2 pb-3 space-y-1">
-            <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')" icon="home">
-                {{ __('Dashboard') }}
+            <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard', 'items.my-items', 'items.show', 'items.edit', 'items.view')" icon="squares-2x2">
+                {{ __('My Items') }}
             </x-responsive-nav-link>
             <x-responsive-nav-link :href="route('home')" :active="request()->routeIs('home')" icon="magnifying-glass">
-                {{ __('Search Items') }}
+                {{ __('Search') }}
             </x-responsive-nav-link>
             <x-responsive-nav-link :href="route('browse')" :active="request()->routeIs('browse')" icon="squares-2x2">
                 {{ __('Browse') }}
             </x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('items.create')" :active="request()->routeIs('items.create')" icon="plus-circle">
-                {{ __('Report Item') }}
-            </x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('items.my-items')" :active="request()->routeIs('items.my-items', 'items.show', 'items.edit')" icon="folder">
-                {{ __('My Items') }}
-            </x-responsive-nav-link>
 
-            @if (Auth::user()->isAdmin())
-                <x-responsive-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin.*')" icon="shield-check"
-                    class="text-sacli-green-700 font-semibold">
-                    {{ __('Admin Panel') }}
-                </x-responsive-nav-link>
-            @endif
+            <div class="border-t border-sacli-green-200 pt-2 mt-2">
+                @if (Auth::user()->isAdmin())
+                    <x-responsive-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin.*')" icon="shield-check"
+                        class="text-sacli-green-700 font-semibold">
+                        {{ __('Admin Panel') }}
+                    </x-responsive-nav-link>
+                @endif
+
+                <!-- Submit Button for Mobile -->
+                <div class="px-3 py-2">
+                    <a href="{{ route('items.create') }}"
+                        class="block w-full text-center px-4 py-3 bg-sacli-green-600 hover:bg-sacli-green-700 text-white font-medium rounded-lg shadow-sm transition-all duration-200 ease-in-out">
+                        <span class="inline-flex items-center gap-2">
+                            <x-icon name="plus-circle" size="sm" />
+                            {{ __('Submit Item') }}
+                        </span>
+                    </a>
+                </div>
+            </div>
         </div>
 
         <!-- Responsive Settings Options -->

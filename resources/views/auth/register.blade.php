@@ -24,6 +24,31 @@
             <x-input-error :messages="$errors->get('email')" class="mt-2" />
         </div>
 
+        <!-- Course (Optional) -->
+        <div>
+            <x-input-label for="course" :value="__('Course (Optional)')" />
+            <x-text-input id="course" class="block mt-1 w-full" type="text" name="course" :value="old('course')"
+                maxlength="100" placeholder="e.g., Computer Science" icon="academic-cap" iconPosition="left"
+                :hasError="$errors->has('course')" />
+            <x-input-error :messages="$errors->get('course')" class="mt-2" />
+        </div>
+
+        <!-- Year Level (Optional) -->
+        <div>
+            <x-input-label for="year" :value="__('Year Level (Optional)')" />
+            <select id="year" name="year"
+                class="block mt-1 w-full border-gray-300 focus:border-sacli-green-500 focus:ring-sacli-green-500 rounded-lg shadow-sm @error('year') border-red-500 @enderror">
+                <option value="">{{ __('Select Year') }}</option>
+                <option value="1" {{ old('year') == '1' ? 'selected' : '' }}>{{ __('1st Year') }}</option>
+                <option value="2" {{ old('year') == '2' ? 'selected' : '' }}>{{ __('2nd Year') }}</option>
+                <option value="3" {{ old('year') == '3' ? 'selected' : '' }}>{{ __('3rd Year') }}</option>
+                <option value="4" {{ old('year') == '4' ? 'selected' : '' }}>{{ __('4th Year') }}</option>
+                <option value="5" {{ old('year') == '5' ? 'selected' : '' }}>{{ __('5th Year') }}</option>
+                <option value="6" {{ old('year') == '6' ? 'selected' : '' }}>{{ __('6th Year') }}</option>
+            </select>
+            <x-input-error :messages="$errors->get('year')" class="mt-2" />
+        </div>
+
         <!-- Password -->
         <div>
             <x-input-label for="password" :value="__('Password')" />

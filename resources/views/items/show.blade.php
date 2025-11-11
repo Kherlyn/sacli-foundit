@@ -123,6 +123,22 @@
                                         <span class="ml-2 text-sm font-mono text-gray-900">#{{ $item->id }}</span>
                                     </div>
 
+                                    @if ($item->user && ($item->user->course || $item->user->year))
+                                        <div>
+                                            <span class="text-sm font-medium text-gray-500">Submitter:</span>
+                                            <div class="ml-2 text-sm text-gray-900">
+                                                @if ($item->user->course)
+                                                    <div>{{ $item->user->course }}</div>
+                                                @endif
+                                                @if ($item->user->year)
+                                                    <div class="text-gray-600">
+                                                        {{ $item->user->year }}{{ $item->user->year == 1 ? 'st' : ($item->user->year == 2 ? 'nd' : ($item->user->year == 3 ? 'rd' : 'th')) }}
+                                                        Year</div>
+                                                @endif
+                                            </div>
+                                        </div>
+                                    @endif
+
                                     <div>
                                         <span class="text-sm font-medium text-gray-500">Submitted:</span>
                                         <span
@@ -151,6 +167,29 @@
                             @if ($item->isVerified() || $item->user_id === auth()->id())
                                 <div class="bg-emerald-50 border border-emerald-200 rounded-lg p-4">
                                     <h3 class="text-lg font-semibold text-emerald-800 mb-4">Contact Information</h3>
+
+                                    <!-- Submitter Course and Year -->
+                                    @if ($item->user && ($item->user->course || $item->user->year))
+                                        <div class="mb-3 pb-3 border-b border-emerald-200">
+                                            <div class="flex items-center text-sm text-emerald-700">
+                                                <x-icon name="academic-cap" size="sm"
+                                                    class="text-emerald-600 mr-2 flex-shrink-0" />
+                                                <span>
+                                                    @if ($item->user->course)
+                                                        <span class="font-medium">{{ $item->user->course }}</span>
+                                                    @else
+                                                        <span class="text-emerald-600">Course not specified</span>
+                                                    @endif
+                                                    @if ($item->user->year)
+                                                        <span class="text-emerald-600 mx-1">•</span>
+                                                        <span
+                                                            class="font-medium">{{ $item->user->year }}{{ $item->user->year == 1 ? 'st' : ($item->user->year == 2 ? 'nd' : ($item->user->year == 3 ? 'rd' : 'th')) }}
+                                                            Year</span>
+                                                    @endif
+                                                </span>
+                                            </div>
+                                        </div>
+                                    @endif
 
                                     @php
                                         $contactInfo = $item->contact_info;

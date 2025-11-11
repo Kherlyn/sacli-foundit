@@ -74,7 +74,9 @@
                                             <x-icon name="hashtag" size="xs" />
                                             Ref: {{ $item->id }}
                                         </span>
-                                        <span class="text-gray-400">{{ $item->created_at->diffForHumans() }}</span>
+                                        <span class="text-gray-400">
+                                            <x-duration-badge :item="$item" :showIcon="false" :showTooltip="false" />
+                                        </span>
                                     </div>
 
                                     <!-- Action Buttons -->

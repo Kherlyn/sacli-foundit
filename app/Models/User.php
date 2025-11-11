@@ -24,6 +24,8 @@ class User extends Authenticatable
         'password',
         'role',
         'notification_preferences',
+        'course',
+        'year',
     ];
 
     /**
@@ -72,6 +74,17 @@ class User extends Authenticatable
     public function isUser(): bool
     {
         return $this->role === 'user';
+    }
+
+    /**
+     * Validation rules for course and year fields.
+     */
+    public static function courseYearRules(): array
+    {
+        return [
+            'course' => 'nullable|string|max:100',
+            'year' => 'nullable|integer|min:1|max:6',
+        ];
     }
 
     /**

@@ -49,3 +49,392 @@
         @apply inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-800;
     }
 }
+
+/* Print Stylesheet - Comprehensive print optimization */
+@media print {
+    /* Page setup and margins */
+    @page {
+        size: auto;
+        margin: 1.5cm 1.5cm 2cm 1.5cm;
+    }
+
+    @page :first {
+        margin-top: 1cm;
+    }
+
+    /* Support for Letter size (US) */
+    @page :left {
+        margin-left: 2cm;
+        margin-right: 1.5cm;
+    }
+
+    @page :right {
+        margin-left: 1.5cm;
+        margin-right: 2cm;
+    }
+
+    /* Base print styles */
+    * {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+        color-adjust: exact !important;
+    }
+
+    body {
+        font-size: 10pt;
+        line-height: 1.4;
+        color: #000;
+        background: white !important;
+        margin: 0;
+        padding: 0;
+    }
+
+    /* Hide navigation and interactive elements */
+    header,
+    nav,
+    .no-print,
+    button,
+    .print\:hidden,
+    [class*="hover:"],
+    .shadow,
+    .shadow-sm,
+    .shadow-md,
+    .shadow-lg {
+        display: none !important;
+    }
+
+    /* Show print-only elements */
+    .print-only,
+    .print\:block {
+        display: block !important;
+    }
+
+    /* Print header styling */
+    .print-header {
+        display: flex !important;
+        justify-content: space-between;
+        align-items: flex-start;
+        padding-bottom: 0.8cm;
+        margin-bottom: 0.8cm;
+        border-bottom: 2px solid #10b981;
+        page-break-after: avoid;
+    }
+
+    .print-header h1 {
+        font-size: 18pt;
+        font-weight: bold;
+        color: #047857;
+        margin: 0;
+        padding: 0;
+    }
+
+    .print-header p {
+        margin: 0.2cm 0 0 0;
+        padding: 0;
+    }
+
+    .print-header .timestamp {
+        text-align: right;
+        font-size: 9pt;
+        color: #666;
+    }
+
+    /* Print footer with page numbers */
+    .print-footer {
+        position: fixed;
+        bottom: 0.5cm;
+        left: 0;
+        right: 0;
+        text-align: center;
+        font-size: 8pt;
+        color: #666;
+        padding-top: 0.3cm;
+        border-top: 1px solid #ddd;
+    }
+
+    .print-footer::after {
+        content: "Page " counter(page);
+        display: block;
+        margin-top: 0.2cm;
+    }
+
+    /* Page break utilities */
+    .page-break-before {
+        page-break-before: always !important;
+        break-before: page !important;
+    }
+
+    .page-break-after {
+        page-break-after: always !important;
+        break-after: page !important;
+    }
+
+    .page-break-inside-avoid {
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+    }
+
+    /* Layout optimization */
+    .max-w-7xl,
+    .max-w-6xl,
+    .max-w-5xl {
+        max-width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    .py-12,
+    .py-8,
+    .py-6 {
+        padding-top: 0 !important;
+        padding-bottom: 0.5cm !important;
+    }
+
+    .px-4,
+    .px-6,
+    .px-8,
+    .sm\:px-6,
+    .lg\:px-8 {
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+    }
+
+    /* Cards and containers */
+    .bg-white,
+    .card {
+        box-shadow: none !important;
+        border: 1px solid #ccc !important;
+        border-radius: 0.2cm !important;
+        margin-bottom: 0.4cm !important;
+    }
+
+    /* Grid layouts for print */
+    .grid {
+        page-break-inside: avoid !important;
+        margin-bottom: 0.5cm !important;
+    }
+
+    .grid-cols-1,
+    .md\:grid-cols-2,
+    .lg\:grid-cols-2,
+    .lg\:grid-cols-3,
+    .lg\:grid-cols-4 {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 0.3cm !important;
+    }
+
+    /* Optimize charts for grayscale printing */
+    canvas {
+        max-height: 250px !important;
+        page-break-inside: avoid !important;
+        margin: 0.3cm 0 !important;
+    }
+
+    /* Convert colors to grayscale-friendly */
+    .text-sacli-green-600,
+    .text-sacli-green-700,
+    .text-sacli-green-800 {
+        color: #000 !important;
+        font-weight: 600 !important;
+    }
+
+    .text-sacli-green-500 {
+        color: #333 !important;
+    }
+
+    .bg-sacli-green-100,
+    .bg-sacli-green-200 {
+        background-color: #f5f5f5 !important;
+        border: 1px solid #ddd !important;
+    }
+
+    .bg-sacli-green-500,
+    .bg-sacli-green-600 {
+        background-color: #666 !important;
+    }
+
+    .bg-gradient-to-br,
+    .bg-gradient-to-r {
+        background: #666 !important;
+    }
+
+    /* Text colors for readability */
+    .text-gray-500,
+    .text-gray-600 {
+        color: #444 !important;
+    }
+
+    .text-gray-700,
+    .text-gray-800,
+    .text-gray-900 {
+        color: #000 !important;
+    }
+
+    .text-white {
+        color: #000 !important;
+    }
+
+    /* Progress bars and indicators */
+    .bg-gray-200 {
+        background-color: #e5e5e5 !important;
+        border: 1px solid #ccc !important;
+    }
+
+    /* Borders */
+    .border-gray-200,
+    .border-gray-300 {
+        border-color: #999 !important;
+    }
+
+    .border-sacli-green-200,
+    .border-sacli-green-300 {
+        border-color: #666 !important;
+    }
+
+    /* Typography */
+    h1 {
+        font-size: 16pt;
+        font-weight: bold;
+        margin-bottom: 0.4cm;
+        page-break-after: avoid;
+    }
+
+    h2 {
+        font-size: 14pt;
+        font-weight: bold;
+        margin-bottom: 0.3cm;
+        page-break-after: avoid;
+    }
+
+    h3 {
+        font-size: 12pt;
+        font-weight: bold;
+        margin-bottom: 0.3cm;
+        page-break-after: avoid;
+    }
+
+    h4 {
+        font-size: 11pt;
+        font-weight: 600;
+        margin-bottom: 0.2cm;
+    }
+
+    p {
+        orphans: 3;
+        widows: 3;
+    }
+
+    /* Spacing adjustments */
+    .mb-8 {
+        margin-bottom: 0.8cm !important;
+    }
+
+    .mb-6 {
+        margin-bottom: 0.5cm !important;
+    }
+
+    .mb-4 {
+        margin-bottom: 0.3cm !important;
+    }
+
+    .gap-6 {
+        gap: 0.4cm !important;
+    }
+
+    .gap-4 {
+        gap: 0.3cm !important;
+    }
+
+    /* Stat cards optimization */
+    .rounded-xl,
+    .rounded-lg {
+        border-radius: 0.2cm !important;
+    }
+
+    /* Icons - simplify for print */
+    svg,
+    iconify-icon {
+        width: 12pt !important;
+        height: 12pt !important;
+        color: #666 !important;
+    }
+
+    /* Tables (if any) */
+    table {
+        border-collapse: collapse;
+        width: 100%;
+        page-break-inside: avoid;
+    }
+
+    thead {
+        display: table-header-group;
+    }
+
+    tr {
+        page-break-inside: avoid;
+    }
+
+    th,
+    td {
+        border: 1px solid #999;
+        padding: 0.2cm;
+        text-align: left;
+    }
+
+    /* Links */
+    a {
+        color: #000 !important;
+        text-decoration: none !important;
+    }
+
+    a[href^="http"]:after {
+        content: " (" attr(href) ")";
+        font-size: 8pt;
+        color: #666;
+    }
+
+    /* Hide decorative elements */
+    .transition,
+    .transition-all,
+    .transition-colors,
+    .duration-150,
+    .duration-200,
+    .duration-300,
+    .ease-in-out {
+        transition: none !important;
+    }
+
+    /* Ensure proper spacing between major sections */
+    .grid.grid-cols-1.lg\:grid-cols-2,
+    .grid.grid-cols-1.md\:grid-cols-2.lg\:grid-cols-4 {
+        margin-bottom: 0.6cm !important;
+    }
+
+    /* Location stats and similar grids */
+    .grid.grid-cols-1.md\:grid-cols-2.lg\:grid-cols-3 {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 0.3cm !important;
+    }
+
+    /* Optimize badges for print */
+    .badge-found,
+    .badge-lost,
+    .badge-category {
+        border: 1px solid #999 !important;
+        background-color: #f5f5f5 !important;
+        color: #000 !important;
+        padding: 0.1cm 0.2cm !important;
+    }
+
+    /* Ensure content doesn't overflow */
+    * {
+        max-width: 100% !important;
+        overflow: visible !important;
+    }
+
+    /* Remove hover effects */
+    *:hover {
+        background-color: inherit !important;
+        color: inherit !important;
+    }
+}

@@ -238,6 +238,8 @@ class AdminController extends Controller
       'status' => $request->get('status'),
       'type' => $request->get('type'),
       'category_id' => $request->get('category_id'),
+      'course' => $request->get('course'),
+      'year' => $request->get('year'),
     ];
 
     $perPage = $request->get('per_page', 15);

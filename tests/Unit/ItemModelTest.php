@@ -244,3 +244,68 @@ describe('Item Model Helper Methods', function () {
     expect($this->item->fresh()->resolved_at)->not->toBeNull();
   });
 });
+
+describe('Item Duration Calculation', function () {
+  it('calculates duration for items reported today', function () {
+    $item = Item::factory()->create([
+      'user_id' => $this->user->id,
+      'category_id' => $this->category->id,
+      'date_occurred' => now(),
+    ]);
+
+    expect($item->duration)->toContain('ago');
+  });
+
+  it('calculates duration in days for items between 1 and 30 days old', function () {
+    $item = Item::factory()->create([
+      'user_id' => $this->user->id,
+      'category_id' => $this->category->id,
+      'date_occurred' => now()->subDays(10),
+    ]);
+
+    expect($item->duration)->toContain('day');
+    expect($item->duration)->toContain('ago');
+  });
+
+  it('calculates duration in months for items older than 30 days', function () {
+    $item = Item::factory()->create([
+      'user_id' => $this->user->id,
+      'category_id' => $this->category->id,
+      'date_occurred' => now()->subMonths(2),
+    ]);
+
+    expect($item->duration)->toContain('month');
+    expect($item->duration)->toContain('ago');
+  });
+
+  it('returns appropriate CSS class for recent items', function () {
+    $item = Item::factory()->create([
+      'user_id' => $this->user->id,
+      'category_id' => $this->category->id,
+      'date_occurred' => now()->subDays(3),
+    ]);
+
+    expect($item->duration_class)->toContain('sacli-green');
+    expect($item->duration_class)->toContain('font-semibold');
+  });
+
+  it('returns appropriate CSS class for moderate age items', function () {
+    $item = Item::factory()->create([
+      'user_id' => $this->user->id,
+      'category_id' => $this->category->id,
+      'date_occurred' => now()->subDays(15),
+    ]);
+
+    expect($item->duration_class)->toContain('gray-600');
+  });
+
+  it('returns appropriate CSS class for old items', function () {
+    $item = Item::factory()->create([
+      'user_id' => $this->user->id,
+      'category_id' => $this->category->id,
+      'date_occurred' => now()->subDays(45),
+    ]);
+
+    expect($item->duration_class)->toContain('gray-400');
+  });
+});

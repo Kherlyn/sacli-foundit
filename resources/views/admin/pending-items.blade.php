@@ -133,10 +133,7 @@
                                                             <span class="text-gray-600">{{ $item->user->email }}</span>
                                                         </div>
                                                         <div class="flex items-center gap-1.5">
-                                                            <x-icon name="clock" size="sm"
-                                                                class="text-gray-400 flex-shrink-0" />
-                                                            <span
-                                                                class="text-gray-500">{{ $item->created_at->diffForHumans() }}</span>
+                                                            <x-duration-badge :item="$item" />
                                                         </div>
                                                     </div>
                                                 </div>

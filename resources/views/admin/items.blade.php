@@ -20,83 +20,125 @@
             <!-- Filters -->
             <div class="bg-white overflow-hidden shadow-sm rounded-xl mb-6">
                 <div class="p-6">
-                    <form method="GET" action="{{ route('admin.items') }}"
-                        class="grid grid-cols-1 md:grid-cols-5 gap-4">
-                        <div>
-                            <label for="query"
-                                class="block text-sm font-medium text-gray-700 mb-1 flex items-center gap-1.5">
-                                <x-icon name="magnifying-glass" size="sm" class="text-gray-400" />
-                                Search
-                            </label>
-                            <input type="text" id="query" name="query" value="{{ $filters['query'] }}"
-                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-sacli-green-500 focus:border-sacli-green-500 transition-all duration-200"
-                                placeholder="Search items...">
-                        </div>
+                    <form method="GET" action="{{ route('admin.items') }}" class="space-y-4">
+                        <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
+                            <div>
+                                <label for="query"
+                                    class="block text-sm font-medium text-gray-700 mb-1 flex items-center gap-1.5">
+                                    <x-icon name="magnifying-glass" size="sm" class="text-gray-400" />
+                                    Search
+                                </label>
+                                <input type="text" id="query" name="query" value="{{ $filters['query'] }}"
+                                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-sacli-green-500 focus:border-sacli-green-500 transition-all duration-200"
+                                    placeholder="Search items...">
+                            </div>
 
-                        <div>
-                            <label for="status"
-                                class="block text-sm font-medium text-gray-700 mb-1 flex items-center gap-1.5">
-                                <x-icon name="check-badge" size="sm" class="text-gray-400" />
-                                Status
-                            </label>
-                            <select id="status" name="status"
-                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-sacli-green-500 focus:border-sacli-green-500 transition-all duration-200">
-                                <option value="">All Statuses</option>
-                                <option value="pending" {{ $filters['status'] === 'pending' ? 'selected' : '' }}>Pending
-                                </option>
-                                <option value="verified" {{ $filters['status'] === 'verified' ? 'selected' : '' }}>
-                                    Verified</option>
-                                <option value="rejected" {{ $filters['status'] === 'rejected' ? 'selected' : '' }}>
-                                    Rejected</option>
-                                <option value="resolved" {{ $filters['status'] === 'resolved' ? 'selected' : '' }}>
-                                    Resolved</option>
-                            </select>
-                        </div>
-
-                        <div>
-                            <label for="type"
-                                class="block text-sm font-medium text-gray-700 mb-1 flex items-center gap-1.5">
-                                <x-icon name="tag" size="sm" class="text-gray-400" />
-                                Type
-                            </label>
-                            <select id="type" name="type"
-                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-sacli-green-500 focus:border-sacli-green-500 transition-all duration-200">
-                                <option value="">All Types</option>
-                                <option value="lost" {{ $filters['type'] === 'lost' ? 'selected' : '' }}>Lost</option>
-                                <option value="found" {{ $filters['type'] === 'found' ? 'selected' : '' }}>Found
-                                </option>
-                            </select>
-                        </div>
-
-                        <div>
-                            <label for="category_id"
-                                class="block text-sm font-medium text-gray-700 mb-1 flex items-center gap-1.5">
-                                <x-icon name="folder" size="sm" class="text-gray-400" />
-                                Category
-                            </label>
-                            <select id="category_id" name="category_id"
-                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-sacli-green-500 focus:border-sacli-green-500 transition-all duration-200">
-                                <option value="">All Categories</option>
-                                @foreach ($categories as $category)
-                                    <option value="{{ $category->id }}"
-                                        {{ $filters['category_id'] == $category->id ? 'selected' : '' }}>
-                                        {{ $category->name }}
+                            <div>
+                                <label for="status"
+                                    class="block text-sm font-medium text-gray-700 mb-1 flex items-center gap-1.5">
+                                    <x-icon name="check-badge" size="sm" class="text-gray-400" />
+                                    Status
+                                </label>
+                                <select id="status" name="status"
+                                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-sacli-green-500 focus:border-sacli-green-500 transition-all duration-200">
+                                    <option value="">All Statuses</option>
+                                    <option value="pending" {{ $filters['status'] === 'pending' ? 'selected' : '' }}>
+                                        Pending
                                     </option>
-                                @endforeach
-                            </select>
+                                    <option value="verified" {{ $filters['status'] === 'verified' ? 'selected' : '' }}>
+                                        Verified</option>
+                                    <option value="rejected" {{ $filters['status'] === 'rejected' ? 'selected' : '' }}>
+                                        Rejected</option>
+                                    <option value="resolved" {{ $filters['status'] === 'resolved' ? 'selected' : '' }}>
+                                        Resolved</option>
+                                </select>
+                            </div>
+
+                            <div>
+                                <label for="type"
+                                    class="block text-sm font-medium text-gray-700 mb-1 flex items-center gap-1.5">
+                                    <x-icon name="tag" size="sm" class="text-gray-400" />
+                                    Type
+                                </label>
+                                <select id="type" name="type"
+                                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-sacli-green-500 focus:border-sacli-green-500 transition-all duration-200">
+                                    <option value="">All Types</option>
+                                    <option value="lost" {{ $filters['type'] === 'lost' ? 'selected' : '' }}>Lost
+                                    </option>
+                                    <option value="found" {{ $filters['type'] === 'found' ? 'selected' : '' }}>Found
+                                    </option>
+                                </select>
+                            </div>
+
+                            <div>
+                                <label for="category_id"
+                                    class="block text-sm font-medium text-gray-700 mb-1 flex items-center gap-1.5">
+                                    <x-icon name="folder" size="sm" class="text-gray-400" />
+                                    Category
+                                </label>
+                                <select id="category_id" name="category_id"
+                                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-sacli-green-500 focus:border-sacli-green-500 transition-all duration-200">
+                                    <option value="">All Categories</option>
+                                    @foreach ($categories as $category)
+                                        <option value="{{ $category->id }}"
+                                            {{ $filters['category_id'] == $category->id ? 'selected' : '' }}>
+                                            {{ $category->name }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+                            <div class="flex items-end space-x-2">
+                                <button type="submit"
+                                    class="inline-flex items-center gap-2 bg-sacli-green-600 hover:bg-sacli-green-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ease-in-out shadow-sm hover:shadow-md">
+                                    <x-icon name="funnel" size="sm" />
+                                    Filter
+                                </button>
+                                <a href="{{ route('admin.items') }}"
+                                    class="inline-flex items-center gap-2 bg-gray-300 hover:bg-gray-400 text-gray-700 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ease-in-out">
+                                    <x-icon name="x-mark" size="sm" />
+                                    Clear
+                                </a>
+                            </div>
                         </div>
 
-                        <div class="flex items-end space-x-2">
-                            <button type="submit"
-                                class="inline-flex items-center gap-2 bg-sacli-green-600 hover:bg-sacli-green-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ease-in-out shadow-sm hover:shadow-md">
-                                <x-icon name="funnel" size="sm" />
-                                Filter
-                            </button>
-                            <a href="{{ route('admin.items') }}"
-                                class="inline-flex items-center gap-2 bg-gray-300 hover:bg-gray-400 text-gray-700 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ease-in-out">
-                                <x-icon name="x-mark" size="sm" />
-                                Clear
-                            </a>
+                        <!-- Additional Filters Row -->
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div>
+                                <label for="course"
+                                    class="block text-sm font-medium text-gray-700 mb-1 flex items-center gap-1.5">
+                                    <x-icon name="academic-cap" size="sm" class="text-gray-400" />
+                                    Course
+                                </label>
+                                <input type="text" id="course" name="course"
+                                    value="{{ $filters['course'] ?? '' }}"
+                                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-sacli-green-500 focus:border-sacli-green-500 transition-all duration-200"
+                                    placeholder="Filter by course...">
+                            </div>
+
+                            <div>
+                                <label for="year"
+                                    class="block text-sm font-medium text-gray-700 mb-1 flex items-center gap-1.5">
+                                    <x-icon name="academic-cap" size="sm" class="text-gray-400" />
+                                    Year Level
+                                </label>
+                                <select id="year" name="year"
+                                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-sacli-green-500 focus:border-sacli-green-500 transition-all duration-200">
+                                    <option value="">All Years</option>
+                                    <option value="1" {{ ($filters['year'] ?? '') == '1' ? 'selected' : '' }}>1st
+                                        Year</option>
+                                    <option value="2" {{ ($filters['year'] ?? '') == '2' ? 'selected' : '' }}>2nd
+                                        Year</option>
+                                    <option value="3" {{ ($filters['year'] ?? '') == '3' ? 'selected' : '' }}>3rd
+                                        Year</option>
+                                    <option value="4" {{ ($filters['year'] ?? '') == '4' ? 'selected' : '' }}>4th
+                                        Year</option>
+                                    <option value="5" {{ ($filters['year'] ?? '') == '5' ? 'selected' : '' }}>5th
+                                        Year</option>
+                                    <option value="6" {{ ($filters['year'] ?? '') == '6' ? 'selected' : '' }}>6th
+                                        Year</option>
+                                </select>
+                            </div>
                         </div>
                     </form>
                 </div>
@@ -191,8 +233,7 @@
                                                     {{ $item->user->name }}
                                                 </div>
                                                 <div class="flex items-center gap-1.5">
-                                                    <x-icon name="clock" size="sm" class="text-gray-400" />
-                                                    {{ $item->created_at->diffForHumans() }}
+                                                    <x-duration-badge :item="$item" />
                                                 </div>
                                             </td>
                                             <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">

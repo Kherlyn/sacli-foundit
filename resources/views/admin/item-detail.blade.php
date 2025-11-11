@@ -109,8 +109,34 @@
                                             <dd class="text-sm font-medium text-gray-900 ml-auto">
                                                 {{ $item->user->email }}</dd>
                                         </div>
+                                        @if ($item->user->course || $item->user->year)
+                                            <div class="flex items-center gap-2">
+                                                <x-icon name="academic-cap" size="sm"
+                                                    class="text-gray-400 flex-shrink-0" />
+                                                <dt class="text-sm text-gray-500">Course/Year:</dt>
+                                                <dd class="text-sm font-medium text-gray-900 ml-auto">
+                                                    @if ($item->user->course)
+                                                        {{ $item->user->course }}
+                                                    @else
+                                                        <span class="text-gray-400">Not specified</span>
+                                                    @endif
+                                                    @if ($item->user->year)
+                                                        <span class="text-gray-400 mx-1">•</span>
+                                                        Year {{ $item->user->year }}
+                                                    @endif
+                                                </dd>
+                                            </div>
+                                        @endif
                                         <div class="flex items-center gap-2">
                                             <x-icon name="clock" size="sm" class="text-gray-400 flex-shrink-0" />
+                                            <dt class="text-sm text-gray-500">Duration:</dt>
+                                            <dd class="text-sm font-medium ml-auto">
+                                                <x-duration-badge :item="$item" :showIcon="false" />
+                                            </dd>
+                                        </div>
+                                        <div class="flex items-center gap-2">
+                                            <x-icon name="calendar" size="sm"
+                                                class="text-gray-400 flex-shrink-0" />
                                             <dt class="text-sm text-gray-500">Submitted:</dt>
                                             <dd class="text-sm font-medium text-gray-900 ml-auto">
                                                 {{ $item->created_at->format('M j, Y g:i A') }}</dd>

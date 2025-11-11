@@ -204,6 +204,56 @@ class Item extends Model
     }
 
     /**
+     * Get the duration since the item was reported.
+     * Returns a human-readable string like "5 hours ago", "3 days ago", or "2 months ago".
+     */
+    public function getDurationAttribute(): ?string
+    {
+        if (!$this->date_occurred) {
+            return null;
+        }
+
+        $now = now();
+        /** @var \Carbon\Carbon $date */
+        $date = $this->date_occurred;
+
+        $diffInHours = (int) $date->diffInHours($now);
+        $diffInDays = (int) $date->diffInDays($now);
+        $diffInMonths = (int) $date->diffInMonths($now);
+
+        if ($diffInHours < 24) {
+            return $diffInHours . ' hour' . ($diffInHours != 1 ? 's' : '') . ' ago';
+        } elseif ($diffInDays <= 30) {
+            return $diffInDays . ' day' . ($diffInDays != 1 ? 's' : '') . ' ago';
+        } else {
+            return $diffInMonths . ' month' . ($diffInMonths != 1 ? 's' : '') . ' ago';
+        }
+    }
+
+    /**
+     * Get CSS class based on item age for visual styling.
+     * Returns different classes for recent, moderate, and old items.
+     */
+    public function getDurationClassAttribute(): string
+    {
+        if (!$this->date_occurred) {
+            return 'text-gray-500';
+        }
+
+        /** @var \Carbon\Carbon $date */
+        $date = $this->date_occurred;
+        $diffInDays = $date->diffInDays(now());
+
+        if ($diffInDays < 7) {
+            return 'text-sacli-green-600 font-semibold'; // Recent items (less than a week)
+        } elseif ($diffInDays <= 30) {
+            return 'text-gray-600'; // Moderate age (1 week to 1 month)
+        } else {
+            return 'text-gray-400'; // Older items (more than a month)
+        }
+    }
+
+    /**
      * Check if the item is owned by the given user.
      */
     public function isOwnedBy($user)

@@ -142,12 +142,14 @@
                             <div>
                                 <h4 class="font-medium text-gray-900 mb-1 flex items-center gap-2">
                                     <x-icon name="clock" size="sm" class="text-sacli-green-600" />
-                                    Reported
+                                    Duration
                                 </h4>
-                                <p class="text-gray-600 ml-6">
-                                    {{ $item->created_at->format('M j, Y') }}
-                                    ({{ $item->created_at->diffForHumans() }})
-                                </p>
+                                <div class="ml-6">
+                                    <x-duration-badge :item="$item" :showIcon="false" />
+                                    <p class="text-xs text-gray-500 mt-1">
+                                        Reported on {{ $item->created_at->format('M j, Y') }}
+                                    </p>
+                                </div>
                             </div>
                             <div>
                                 <h4 class="font-medium text-gray-900 mb-1 flex items-center gap-2">
@@ -166,6 +168,29 @@
                                 <x-icon name="user-circle" size="md" class="text-sacli-green-600" />
                                 Contact Information
                             </h3>
+
+                            <!-- Submitter Course and Year -->
+                            @if ($item->user && ($item->user->course || $item->user->year))
+                                <div class="mb-4 p-3 bg-gray-50 rounded-lg">
+                                    <div class="flex items-center gap-2 text-sm text-gray-600">
+                                        <x-icon name="academic-cap" size="sm"
+                                            class="text-gray-400 flex-shrink-0" />
+                                        <span>
+                                            @if ($item->user->course)
+                                                <span class="font-medium">{{ $item->user->course }}</span>
+                                            @else
+                                                <span class="text-gray-400">Course not specified</span>
+                                            @endif
+                                            @if ($item->user->year)
+                                                <span class="text-gray-400 mx-1">•</span>
+                                                <span
+                                                    class="font-medium">{{ $item->user->year }}{{ $item->user->year == 1 ? 'st' : ($item->user->year == 2 ? 'nd' : ($item->user->year == 3 ? 'rd' : 'th')) }}
+                                                    Year</span>
+                                            @endif
+                                        </span>
+                                    </div>
+                                </div>
+                            @endif
 
                             @if ($item->contact_info)
                                 @php

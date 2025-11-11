@@ -247,6 +247,8 @@ class ItemRepository
     ?string $status = null,
     ?string $type = null,
     ?int $categoryId = null,
+    ?string $course = null,
+    ?int $year = null,
     int $perPage = 15
   ): LengthAwarePaginator {
     $builder = Item::with(['category', 'user', 'images']);
@@ -265,6 +267,18 @@ class ItemRepository
 
     if ($categoryId) {
       $builder->inCategory($categoryId);
+    }
+
+    if ($course) {
+      $builder->whereHas('user', function ($q) use ($course) {
+        $q->where('course', 'like', '%' . $course . '%');
+      });
+    }
+
+    if ($year) {
+      $builder->whereHas('user', function ($q) use ($year) {
+        $q->where('year', $year);
+      });
     }
 
     return $builder->orderBy('created_at', 'desc')

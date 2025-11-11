@@ -47,10 +47,25 @@
                 <x-icon name="calendar" size="sm" class="text-gray-400 flex-shrink-0" />
                 <span>{{ $item->date_occurred->format('M d, Y') }}</span>
             </div>
-            <div class="flex items-center gap-2 text-sm text-gray-500">
-                <x-icon name="clock" size="sm" class="text-gray-400 flex-shrink-0" />
-                <span>{{ $item->created_at->diffForHumans() }}</span>
+            <div class="flex items-center gap-2 text-sm">
+                <x-duration-badge :item="$item" />
             </div>
+            @if ($item->user && ($item->user->course || $item->user->year))
+                <div class="flex items-center gap-2 text-sm text-gray-500">
+                    <x-icon name="academic-cap" size="xs" class="text-gray-400 flex-shrink-0" />
+                    <span class="line-clamp-1">
+                        @if ($item->user->course)
+                            {{ $item->user->course }}
+                        @else
+                            <span class="text-gray-400">Course not specified</span>
+                        @endif
+                        @if ($item->user->year)
+                            <span class="text-gray-400 mx-1">•</span>
+                            Year {{ $item->user->year }}
+                        @endif
+                    </span>
+                </div>
+            @endif
         </div>
     </div>
 </div>

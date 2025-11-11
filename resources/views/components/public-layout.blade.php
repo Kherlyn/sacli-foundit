@@ -12,123 +12,25 @@
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
+    <!-- Iconify Icons (200k+ icons from all libraries) -->
+    <script defer src="https://code.iconify.design/iconify-icon/2.1.0/iconify-icon.min.js"></script>
+
+    <!-- Turbo Drive for smooth, no-hard-refresh navigation -->
+    <script defer src="https://cdn.jsdelivr.net/npm/@hotwired/turbo@8.0.4/dist/turbo.es2017-umd.js"></script>
+    <script>
+        window.addEventListener('DOMContentLoaded', () => {
+            if (window.Turbo) {
+                Turbo.session.drive = true;
+            }
+        });
+    </script>
+
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
 <body class="font-sans antialiased bg-white">
-    <!-- Navigation -->
-    <nav class="bg-white shadow-sm border-b border-gray-200">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center h-16">
-                <!-- Logo -->
-                <div class="flex items-center">
-                    <a href="{{ route('home') }}" class="flex items-center">
-                        <div class="w-8 h-8 bg-sacli-green-400 rounded-lg flex items-center justify-center mr-3">
-                            <span class="text-white font-bold text-lg">S</span>
-                        </div>
-                        <span class="text-xl font-bold text-gray-900">SACLI FOUNDIT</span>
-                    </a>
-                </div>
-
-                <!-- Navigation Links -->
-                <div class="hidden md:flex items-center space-x-8">
-                    <a href="{{ route('home') }}"
-                        class="text-gray-700 hover:text-sacli-green-400 font-medium transition duration-150 ease-in-out {{ request()->routeIs('home') ? 'text-sacli-green-400' : '' }}">
-                        Home
-                    </a>
-                    <a href="{{ route('search') }}"
-                        class="text-gray-700 hover:text-sacli-green-400 font-medium transition duration-150 ease-in-out {{ request()->routeIs('search') ? 'text-sacli-green-400' : '' }}">
-                        Search
-                    </a>
-                    <a href="{{ route('browse') }}"
-                        class="text-gray-700 hover:text-sacli-green-400 font-medium transition duration-150 ease-in-out {{ request()->routeIs('browse') ? 'text-sacli-green-400' : '' }}">
-                        Browse
-                    </a>
-
-                    @auth
-                        <a href="{{ route('dashboard') }}"
-                            class="text-gray-700 hover:text-sacli-green-400 font-medium transition duration-150 ease-in-out">
-                            Dashboard
-                        </a>
-
-                        <!-- Notification Bell -->
-                        <x-notification-bell />
-
-                        <form method="POST" action="{{ route('logout') }}" class="inline">
-                            @csrf
-                            <button type="submit"
-                                class="text-gray-700 hover:text-sacli-green-400 font-medium transition duration-150 ease-in-out">
-                                Logout
-                            </button>
-                        </form>
-                    @else
-                        <a href="{{ route('login') }}"
-                            class="text-gray-700 hover:text-sacli-green-400 font-medium transition duration-150 ease-in-out">
-                            Login
-                        </a>
-                        <a href="{{ route('register') }}"
-                            class="bg-sacli-green-400 hover:bg-sacli-green-500 text-white px-4 py-2 rounded-lg font-medium transition duration-150 ease-in-out">
-                            Register
-                        </a>
-                    @endauth
-                </div>
-
-                <!-- Mobile menu button -->
-                <div class="md:hidden">
-                    <button type="button"
-                        class="text-gray-700 hover:text-sacli-green-400 focus:outline-none focus:text-sacli-green-400"
-                        onclick="toggleMobileMenu()">
-                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M4 6h16M4 12h16M4 18h16" />
-                        </svg>
-                    </button>
-                </div>
-            </div>
-
-            <!-- Mobile menu -->
-            <div id="mobile-menu" class="md:hidden hidden">
-                <div class="px-2 pt-2 pb-3 space-y-1 border-t border-gray-200">
-                    <a href="{{ route('home') }}"
-                        class="block px-3 py-2 text-gray-700 hover:text-sacli-green-400 font-medium {{ request()->routeIs('home') ? 'text-sacli-green-400' : '' }}">
-                        Home
-                    </a>
-                    <a href="{{ route('search') }}"
-                        class="block px-3 py-2 text-gray-700 hover:text-sacli-green-400 font-medium {{ request()->routeIs('search') ? 'text-sacli-green-400' : '' }}">
-                        Search
-                    </a>
-                    <a href="{{ route('browse') }}"
-                        class="block px-3 py-2 text-gray-700 hover:text-sacli-green-400 font-medium {{ request()->routeIs('browse') ? 'text-sacli-green-400' : '' }}">
-                        Browse
-                    </a>
-
-                    @auth
-                        <a href="{{ route('dashboard') }}"
-                            class="block px-3 py-2 text-gray-700 hover:text-sacli-green-400 font-medium">
-                            Dashboard
-                        </a>
-                        <form method="POST" action="{{ route('logout') }}" class="block">
-                            @csrf
-                            <button type="submit"
-                                class="w-full text-left px-3 py-2 text-gray-700 hover:text-sacli-green-400 font-medium">
-                                Logout
-                            </button>
-                        </form>
-                    @else
-                        <a href="{{ route('login') }}"
-                            class="block px-3 py-2 text-gray-700 hover:text-sacli-green-400 font-medium">
-                            Login
-                        </a>
-                        <a href="{{ route('register') }}"
-                            class="block px-3 py-2 bg-sacli-green-400 hover:bg-sacli-green-500 text-white rounded-lg font-medium mx-3 text-center">
-                            Register
-                        </a>
-                    @endauth
-                </div>
-            </div>
-        </div>
-    </nav>
+    <x-unified-navigation />
 
     <!-- Page Content -->
     <main>
@@ -223,12 +125,7 @@
         </div>
     </footer>
 
-    <script>
-        function toggleMobileMenu() {
-            const menu = document.getElementById('mobile-menu');
-            menu.classList.toggle('hidden');
-        }
-    </script>
+
 </body>
 
 </html>

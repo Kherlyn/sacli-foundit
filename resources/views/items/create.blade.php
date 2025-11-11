@@ -39,31 +39,53 @@
                     <form action="{{ route('items.store') }}" method="POST" enctype="multipart/form-data"
                         class="space-y-6">
                         @csrf
-                        <input type="hidden" name="type" value="{{ $type }}">
 
-                        <!-- Item Type Display -->
-                        <div class="bg-sacli-green-50 border border-sacli-green-200 rounded-xl p-3 sm:p-4">
-                            <div class="flex items-start sm:items-center">
-                                @if ($type === 'lost')
-                                    <x-icon name="exclamation-circle" size="lg"
-                                        class="text-sacli-green-600 mr-2 sm:mr-3 flex-shrink-0 mt-0.5 sm:mt-0" />
-                                    <div>
-                                        <h3 class="text-base sm:text-lg font-medium text-sacli-green-800">Reporting a
-                                            Lost Item</h3>
-                                        <p class="text-sm sm:text-base text-sacli-green-700">Provide details about the
-                                            item you lost so others can help you find it.</p>
+                        <!-- Item Type Selection -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-3">What would you like to
+                                report?</label>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+                                <!-- Lost Item Option -->
+                                <label class="relative cursor-pointer">
+                                    <input type="radio" name="type" value="lost"
+                                        {{ old('type', $type) === 'lost' ? 'checked' : '' }}
+                                        onchange="updateFormLabels('lost')" class="peer sr-only">
+                                    <div
+                                        class="border-2 border-gray-300 rounded-xl p-4 sm:p-5 transition-all duration-200 hover:border-gray-400 hover:shadow-md peer-checked:border-sacli-green-600 peer-checked:bg-sacli-green-50 peer-checked:shadow-lg">
+                                        <div class="flex items-center gap-3">
+                                            <div class="flex-shrink-0">
+                                                <x-icon name="exclamation-circle" size="xl" class="text-red-600" />
+                                            </div>
+                                            <div>
+                                                <h3 class="text-base sm:text-lg font-semibold text-gray-900">Looking for
+                                                    (Lost)</h3>
+                                                <p class="text-sm text-gray-600 mt-1">Report an item you lost</p>
+                                            </div>
+                                        </div>
                                     </div>
-                                @else
-                                    <x-icon name="check-circle" size="lg"
-                                        class="text-sacli-green-600 mr-2 sm:mr-3 flex-shrink-0 mt-0.5 sm:mt-0" />
-                                    <div>
-                                        <h3 class="text-base sm:text-lg font-medium text-sacli-green-800">Reporting a
-                                            Found Item</h3>
-                                        <p class="text-sm sm:text-base text-sacli-green-700">Help someone find their
-                                            lost item by providing details about what you found.</p>
+                                </label>
+
+                                <!-- Found Item Option -->
+                                <label class="relative cursor-pointer">
+                                    <input type="radio" name="type" value="found"
+                                        {{ old('type', $type) === 'found' ? 'checked' : '' }}
+                                        onchange="updateFormLabels('found')" class="peer sr-only">
+                                    <div
+                                        class="border-2 border-gray-300 rounded-xl p-4 sm:p-5 transition-all duration-200 hover:border-gray-400 hover:shadow-md peer-checked:border-sacli-green-600 peer-checked:bg-sacli-green-50 peer-checked:shadow-lg">
+                                        <div class="flex items-center gap-3">
+                                            <div class="flex-shrink-0">
+                                                <x-icon name="check-circle" size="xl"
+                                                    class="text-sacli-green-600" />
+                                            </div>
+                                            <div>
+                                                <h3 class="text-base sm:text-lg font-semibold text-gray-900">Found</h3>
+                                                <p class="text-sm text-gray-600 mt-1">Report an item you found</p>
+                                            </div>
+                                        </div>
                                     </div>
-                                @endif
+                                </label>
                             </div>
+                            <x-input-error class="mt-2" :messages="$errors->get('type')" />
                         </div>
 
                         <!-- Item Title -->
@@ -113,7 +135,10 @@
 
                         <!-- Location -->
                         <div>
-                            <x-input-label for="location" :value="$type === 'lost' ? __('Where did you lose it?') : __('Where did you find it?')" />
+                            <label for="location" class="block font-medium text-sm text-gray-700">
+                                <span
+                                    id="location-label">{{ $type === 'lost' ? __('Where did you lose it?') : __('Where did you find it?') }}</span>
+                            </label>
                             <x-text-input id="location" name="location" type="text" class="mt-1 block w-full"
                                 :value="old('location')" required icon="map-pin" iconPosition="left"
                                 placeholder="e.g., Library 2nd floor, Campus cafeteria, Near main gate" />
@@ -122,7 +147,10 @@
 
                         <!-- Date -->
                         <div>
-                            <x-input-label for="date_occurred" :value="$type === 'lost' ? __('When did you lose it?') : __('When did you find it?')" />
+                            <label for="date_occurred" class="block font-medium text-sm text-gray-700">
+                                <span
+                                    id="date-label">{{ $type === 'lost' ? __('When did you lose it?') : __('When did you find it?') }}</span>
+                            </label>
                             <x-text-input id="date_occurred" name="date_occurred" type="date"
                                 class="mt-1 block w-full" :value="old('date_occurred')" required max="{{ date('Y-m-d') }}"
                                 icon="calendar" iconPosition="left" />
@@ -246,6 +274,19 @@
 
     <!-- JavaScript for form interactions -->
     <script>
+        function updateFormLabels(type) {
+            const locationLabel = document.getElementById('location-label');
+            const dateLabel = document.getElementById('date-label');
+
+            if (type === 'lost') {
+                locationLabel.textContent = 'Where did you lose it?';
+                dateLabel.textContent = 'When did you lose it?';
+            } else {
+                locationLabel.textContent = 'Where did you find it?';
+                dateLabel.textContent = 'When did you find it?';
+            }
+        }
+
         function toggleContactFields() {
             const method = document.getElementById('contact_method').value;
             const emailField = document.getElementById('email-field');

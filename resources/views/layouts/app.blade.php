@@ -17,7 +17,13 @@
 
     <!-- Turbo Drive for smooth, no-hard-refresh navigation -->
     <script defer src="https://cdn.jsdelivr.net/npm/@hotwired/turbo@8.0.4/dist/turbo.es2017-umd.js"></script>
-    <script>window.addEventListener('DOMContentLoaded',()=>{ if (window.Turbo) { Turbo.session.drive = true; } });</script>
+    <script>
+        window.addEventListener('DOMContentLoaded', () => {
+            if (window.Turbo) {
+                Turbo.session.drive = true;
+            }
+        });
+    </script>
 
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -25,7 +31,7 @@
 
 <body class="font-sans antialiased">
     <div class="min-h-screen bg-sacli-green-50">
-        @include('layouts.navigation')
+        <x-unified-navigation />
 
         <!-- Page Heading -->
         @isset($header)
@@ -71,7 +77,6 @@
 
         <!-- Page Content -->
         <main id="main-content" role="main">
-            <x-page-skeleton lines="6" />
             {{ $slot }}
         </main>
     </div>
