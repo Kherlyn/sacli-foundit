@@ -255,9 +255,15 @@ class AdminController extends Controller
   public function showItem(Item $item)
   {
     $item->load(['category', 'user', 'images']);
-    $similarItems = $this->itemService->getSimilarItems($item, 3);
 
-    return view('admin.item-detail', compact('item', 'similarItems'));
+    // Get other recent items (not similar, just other items)
+    $otherItems = Item::where('id', '!=', $item->id)
+      ->with(['category', 'user', 'images'])
+      ->orderBy('created_at', 'desc')
+      ->limit(4)
+      ->get();
+
+    return view('admin.item-detail', compact('item', 'otherItems'));
   }
 
   /**

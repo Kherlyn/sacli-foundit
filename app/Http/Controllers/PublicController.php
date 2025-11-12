@@ -84,9 +84,10 @@ class PublicController extends Controller
       abort(404, 'Item not found or not publicly available.');
     }
 
-    $similarItems = $this->itemRepository->getSimilarItems($item, 4);
+    // Get other recent items (not similar, just other items)
+    $otherItems = $this->itemRepository->getRecentPublicItems(4, [$id]);
 
-    return view('public.show', compact('item', 'similarItems'));
+    return view('public.show', compact('item', 'otherItems'));
   }
 
   /**

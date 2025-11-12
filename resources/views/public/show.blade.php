@@ -267,46 +267,22 @@
                 </div>
             </div>
 
-            <!-- Related Items -->
-            <div class="mt-12">
-                <h2 class="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-2">
-                    <x-icon name="squares-2x2" size="md" class="text-sacli-green-600" />
-                    Similar Items
-                </h2>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                    <!-- This would be populated with related items -->
-                    @for ($i = 1; $i <= 4; $i++)
-                        <div
-                            class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-all duration-200">
-                            <div
-                                class="h-32 bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center">
-                                <x-icon name="photo" size="lg" class="text-gray-400" />
-                            </div>
-                            <div class="p-4">
-                                <div class="flex items-center justify-between mb-2">
-                                    <span
-                                        class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-sacli-green-100 text-sacli-green-800">
-                                        <x-icon name="check-circle" size="xs" />
-                                        Found
-                                    </span>
-                                    <span class="text-xs text-gray-500 flex items-center gap-1">
-                                        <x-icon name="clock" size="xs" />
-                                        2 days ago
-                                    </span>
-                                </div>
-                                <h3 class="font-medium text-gray-900 mb-1 text-sm">Similar Item {{ $i }}
-                                </h3>
-                                <p class="text-gray-600 text-xs mb-2">Brief description...</p>
-                                <a href="#"
-                                    class="text-sacli-green-600 hover:text-sacli-green-700 font-medium text-xs inline-flex items-center gap-1 transition-colors">
-                                    View Details
-                                    <x-icon name="arrow-right" size="xs" />
-                                </a>
-                            </div>
-                        </div>
-                    @endfor
+            <!-- Other Items -->
+            @if (isset($otherItems) && $otherItems->count() > 0)
+                <div class="mt-12">
+                    <h2 class="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-2">
+                        <x-icon name="squares-2x2" size="md" class="text-sacli-green-600" />
+                        Other Items
+                    </h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                        @foreach ($otherItems as $otherItem)
+                            <a href="{{ route('items.show', $otherItem->id) }}" class="block">
+                                <x-item-card :item="$otherItem" />
+                            </a>
+                        @endforeach
+                    </div>
                 </div>
-            </div>
+            @endif
         @else
             <!-- Item Not Found -->
             <div class="text-center py-12">

@@ -240,6 +240,23 @@ class ItemRepository
   }
 
   /**
+   * Get recent public items excluding specific IDs.
+   */
+  public function getRecentPublicItems(int $limit = 4, array $excludeIds = []): Collection
+  {
+    $query = Item::public()
+      ->with(['category', 'user', 'images'])
+      ->orderBy('created_at', 'desc')
+      ->limit($limit);
+
+    if (!empty($excludeIds)) {
+      $query->whereNotIn('id', $excludeIds);
+    }
+
+    return $query->get();
+  }
+
+  /**
    * Search items for admin with all statuses.
    */
   public function adminSearchItems(

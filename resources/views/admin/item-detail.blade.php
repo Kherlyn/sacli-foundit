@@ -274,21 +274,21 @@
                         </div>
                     </div>
 
-                    <!-- Similar Items -->
-                    @if ($similarItems->count() > 0)
+                    <!-- Other Items -->
+                    @if (isset($otherItems) && $otherItems->count() > 0)
                         <div class="bg-white overflow-hidden shadow-sm rounded-xl">
                             <div class="p-6">
                                 <h3 class="text-lg font-medium text-gray-900 mb-4 flex items-center gap-2">
                                     <x-icon name="squares-2x2" size="md" class="text-gray-400" />
-                                    Similar Items
+                                    Other Items
                                 </h3>
                                 <div class="space-y-3">
-                                    @foreach ($similarItems as $similarItem)
+                                    @foreach ($otherItems as $otherItem)
                                         <div
                                             class="flex items-center space-x-3 p-3 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors duration-200">
-                                            @if ($similarItem->images->count() > 0)
-                                                <img src="{{ $similarItem->images->first()->url }}"
-                                                    alt="{{ $similarItem->title }}"
+                                            @if ($otherItem->images->count() > 0)
+                                                <img src="{{ $otherItem->images->first()->url }}"
+                                                    alt="{{ $otherItem->title }}"
                                                     class="w-12 h-12 object-cover rounded-lg shadow-sm">
                                             @else
                                                 <div
@@ -298,14 +298,14 @@
                                             @endif
                                             <div class="flex-1 min-w-0">
                                                 <p class="text-sm font-medium text-gray-900 truncate">
-                                                    {{ $similarItem->title }}</p>
+                                                    {{ $otherItem->title }}</p>
                                                 <p class="text-xs text-gray-500 flex items-center gap-1">
                                                     <x-icon name="tag" size="xs" class="text-gray-400" />
-                                                    {{ $similarItem->category->name }} •
-                                                    {{ ucfirst($similarItem->type) }}
+                                                    {{ $otherItem->category->name }} •
+                                                    {{ ucfirst($otherItem->type) }}
                                                 </p>
                                             </div>
-                                            <a href="{{ route('admin.items.show', $similarItem) }}"
+                                            <a href="{{ route('admin.items.show', $otherItem) }}"
                                                 class="inline-flex items-center justify-center w-8 h-8 text-sacli-green-600 hover:text-white hover:bg-sacli-green-600 rounded-lg transition-all duration-200">
                                                 <x-icon name="arrow-right" size="sm" />
                                             </a>
