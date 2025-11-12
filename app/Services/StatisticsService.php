@@ -160,8 +160,8 @@ class StatisticsService
     $currentYear = Carbon::now()->year;
 
     return Item::select(
-      DB::raw('strftime("%m", created_at) as month'),
-      DB::raw('strftime("%m", created_at) as month_name'),
+      DB::raw('MONTH(created_at) as month'),
+      DB::raw('MONTHNAME(created_at) as month_name'),
       DB::raw('COUNT(*) as total_items'),
       DB::raw('SUM(CASE WHEN type = "lost" THEN 1 ELSE 0 END) as lost_items'),
       DB::raw('SUM(CASE WHEN type = "found" THEN 1 ELSE 0 END) as found_items'),
@@ -169,7 +169,7 @@ class StatisticsService
       DB::raw('SUM(CASE WHEN status = "resolved" THEN 1 ELSE 0 END) as resolved_items')
     )
       ->whereYear('created_at', $currentYear)
-      ->groupBy(DB::raw('strftime("%m", created_at)'))
+      ->groupBy(DB::raw('MONTH(created_at)'), DB::raw('MONTHNAME(created_at)'))
       ->orderBy('month')
       ->get();
   }

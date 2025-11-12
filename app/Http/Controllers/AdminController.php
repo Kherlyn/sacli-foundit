@@ -46,8 +46,10 @@ class AdminController extends Controller
     ])->count();
 
     // Get admin notifications
-    $unreadNotificationCount = $this->adminNotificationService->getUnreadNotificationCount(auth()->user());
-    $recentNotifications = $this->adminNotificationService->getRecentNotifications(auth()->user(), 5);
+    /** @var \App\Models\User $user */
+    $user = auth()->user();
+    $unreadNotificationCount = $this->adminNotificationService->getUnreadNotificationCount($user);
+    $recentNotifications = $this->adminNotificationService->getRecentNotifications($user, 5);
 
     return view('admin.dashboard', compact(
       'statistics',
@@ -496,6 +498,7 @@ class AdminController extends Controller
     $limit = $request->get('limit', 10);
     $unreadOnly = $request->boolean('unread_only', false);
 
+    /** @var \App\Models\User $user */
     $user = auth()->user();
 
     $notifications = $unreadOnly
@@ -523,6 +526,7 @@ class AdminController extends Controller
     ]);
 
     try {
+      /** @var \App\Models\User $user */
       $user = auth()->user();
       $notificationIds = $request->get('notification_ids', []);
 
