@@ -84,20 +84,30 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::post('/read-all', 'markAllAsRead')->name('read-all');
             Route::delete('/{id}', 'destroy')->name('destroy');
         });
+
+    // User Chat Routes
+    Route::controller(\App\Http\Controllers\ChatController::class)
+        ->prefix('chat')
+        ->name('chat.')
+        ->group(function () {
+            Route::get('/', 'index')->name('index');
+            Route::post('/messages', 'sendMessage')->name('send');
+            Route::get('/messages', 'getMessages')->name('messages');
+            Route::get('/unread-count', 'getUnreadCount')->name('unread');
+        });
 });
 
 // ============================================================================
 // ADMIN ROUTES - Requires admin privileges
 // ============================================================================
+// Note: These routes now use the new admin guard authentication system
+// The 'admin' middleware checks auth()->guard('admin')->check()
 
-Route::middleware(['auth', 'admin', 'throttle:admin'])
+Route::middleware(['admin', 'throttle:admin'])
     ->prefix('admin')
     ->name('admin.')
     ->controller(AdminController::class)
     ->group(function () {
-
-        // Dashboard and overview
-        Route::get('/dashboard', 'dashboard')->name('dashboard');
 
         // Item verification and management
         Route::get('/pending-items', 'pendingItems')->name('pending-items');

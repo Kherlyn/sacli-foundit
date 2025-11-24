@@ -46,10 +46,10 @@ class AdminController extends Controller
     ])->count();
 
     // Get admin notifications
-    /** @var \App\Models\User $user */
-    $user = auth()->user();
-    $unreadNotificationCount = $this->adminNotificationService->getUnreadNotificationCount($user);
-    $recentNotifications = $this->adminNotificationService->getRecentNotifications($user, 5);
+    /** @var \App\Models\Admin $admin */
+    $admin = auth()->guard('admin')->user();
+    $unreadNotificationCount = $this->adminNotificationService->getUnreadNotificationCount($admin);
+    $recentNotifications = $this->adminNotificationService->getRecentNotifications($admin, 5);
 
     return view('admin.dashboard', compact(
       'statistics',
@@ -498,14 +498,14 @@ class AdminController extends Controller
     $limit = $request->get('limit', 10);
     $unreadOnly = $request->boolean('unread_only', false);
 
-    /** @var \App\Models\User $user */
-    $user = auth()->user();
+    /** @var \App\Models\Admin $admin */
+    $admin = auth()->guard('admin')->user();
 
     $notifications = $unreadOnly
-      ? $user->unreadNotifications()->limit($limit)->get()
-      : $user->notifications()->limit($limit)->get();
+      ? $admin->unreadNotifications()->limit($limit)->get()
+      : $admin->notifications()->limit($limit)->get();
 
-    $unreadCount = $this->adminNotificationService->getUnreadNotificationCount($user);
+    $unreadCount = $this->adminNotificationService->getUnreadNotificationCount($admin);
 
     return response()->json([
       'success' => true,
@@ -526,20 +526,20 @@ class AdminController extends Controller
     ]);
 
     try {
-      /** @var \App\Models\User $user */
-      $user = auth()->user();
+      /** @var \App\Models\Admin $admin */
+      $admin = auth()->guard('admin')->user();
       $notificationIds = $request->get('notification_ids', []);
 
       if ($request->boolean('mark_all')) {
-        $this->adminNotificationService->markNotificationsAsRead($user);
+        $this->adminNotificationService->markNotificationsAsRead($admin);
         $message = 'All notifications marked as read.';
       } else {
-        $this->adminNotificationService->markNotificationsAsRead($user, $notificationIds);
+        $this->adminNotificationService->markNotificationsAsRead($admin, $notificationIds);
         $count = count($notificationIds);
         $message = "Marked {$count} notifications as read.";
       }
 
-      $unreadCount = $this->adminNotificationService->getUnreadNotificationCount($user);
+      $unreadCount = $this->adminNotificationService->getUnreadNotificationCount($admin);
 
       return response()->json([
         'success' => true,

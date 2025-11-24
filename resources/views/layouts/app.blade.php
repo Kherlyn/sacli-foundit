@@ -81,6 +81,9 @@
         </main>
     </div>
 
+    <!-- Chat Support Widget -->
+    <x-chat-widget />
+
     <!-- Additional Scripts -->
     @stack('scripts')
 </body>

@@ -2,8 +2,11 @@
 
 namespace App\Services;
 
+use App\Models\Admin;
+use App\Models\ChatMessage;
 use App\Models\Item;
 use App\Models\User;
+use App\Notifications\AdminNewChatMessageNotification;
 use App\Notifications\AdminNewItemSubmissionNotification;
 use App\Notifications\AdminPendingQueueAlertNotification;
 use App\Notifications\AdminSystemEventNotification;
@@ -20,6 +23,18 @@ class AdminNotificationService
 
     if ($admins->isNotEmpty()) {
       Notification::send($admins, new AdminNewItemSubmissionNotification($item));
+    }
+  }
+
+  /**
+   * Send notification to all admins about a new chat message.
+   */
+  public function notifyNewChatMessage(ChatMessage $message): void
+  {
+    $admins = Admin::all();
+
+    if ($admins->isNotEmpty()) {
+      Notification::send($admins, new AdminNewChatMessageNotification($message));
     }
   }
 

@@ -5,6 +5,8 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -58,6 +60,22 @@ class User extends Authenticatable
     public function items(): HasMany
     {
         return $this->hasMany(Item::class);
+    }
+
+    /**
+     * Get the chat session for the user.
+     */
+    public function chatSession(): HasOne
+    {
+        return $this->hasOne(ChatSession::class);
+    }
+
+    /**
+     * Get the chat messages sent by this user.
+     */
+    public function chatMessages(): MorphMany
+    {
+        return $this->morphMany(ChatMessage::class, 'sender');
     }
 
     /**

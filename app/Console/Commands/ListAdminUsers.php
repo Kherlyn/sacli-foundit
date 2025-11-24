@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\Models\User;
+use App\Models\Admin;
 use Illuminate\Console\Command;
 
 class ListAdminUsers extends Command
@@ -12,87 +12,64 @@ class ListAdminUsers extends Command
      *
      * @var string
      */
-    protected $signature = 'admin:list {--all : Show all users, not just admins}';
+    protected $signature = 'admin:list';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'List all admin users in the SACLI FOUNDIT application';
+    protected $description = 'List all admin accounts in the SACLI FOUNDIT application';
 
     /**
      * Execute the console command.
      */
     public function handle()
     {
-        $showAll = $this->option('all');
+        $this->info('👥 SACLI FOUNDIT - Admin Account Management');
+        $this->info('==========================================');
 
-        $this->info('👥 SACLI FOUNDIT - User Management');
-        $this->info('=================================');
+        $admins = Admin::orderBy('created_at', 'desc')->get();
+        $this->info('🔧 Admin Accounts:');
 
-        if ($showAll) {
-            $users = User::orderBy('role', 'desc')->orderBy('created_at', 'desc')->get();
-            $this->info('📋 All Users:');
-        } else {
-            $users = User::where('role', 'admin')->orderBy('created_at', 'desc')->get();
-            $this->info('🔧 Admin Users:');
-        }
-
-        if ($users->isEmpty()) {
-            $message = $showAll ? 'No users found in the system.' : 'No admin users found in the system.';
-            $this->warn("⚠️  $message");
-
-            if (!$showAll) {
-                $this->info('');
-                $this->info('💡 To create an admin user, run:');
-                $this->info('   php artisan admin:create');
-            }
-
+        if ($admins->isEmpty()) {
+            $this->warn('⚠️  No admin accounts found in the system.');
+            $this->info('');
+            $this->info('💡 To create an admin account, run:');
+            $this->info('   php artisan admin:create');
             return 0;
         }
 
         // Prepare table data
-        $headers = ['ID', 'Name', 'Email', 'Role', 'Verified', 'Created', 'Last Login'];
+        $headers = ['ID', 'Name', 'Email', 'Verified', 'Created', 'Updated'];
         $rows = [];
 
-        foreach ($users as $user) {
+        foreach ($admins as $admin) {
             $rows[] = [
-                $user->id,
-                $user->name,
-                $user->email,
-                $user->role === 'admin' ? '🔧 Admin' : '👤 User',
-                $user->email_verified_at ? '✅ Yes' : '❌ No',
-                $user->created_at->format('Y-m-d'),
-                $user->updated_at->format('Y-m-d H:i'),
+                $admin->id,
+                $admin->name,
+                $admin->email,
+                $admin->email_verified_at ? '✅ Yes' : '❌ No',
+                $admin->created_at->format('Y-m-d H:i'),
+                $admin->updated_at->format('Y-m-d H:i'),
             ];
         }
 
         $this->table($headers, $rows);
 
         // Show summary
-        $adminCount = $users->where('role', 'admin')->count();
-        $userCount = $users->where('role', 'user')->count();
-        $verifiedCount = $users->whereNotNull('email_verified_at')->count();
+        $verifiedCount = $admins->whereNotNull('email_verified_at')->count();
 
         $this->info('');
         $this->info('📊 Summary:');
-        if ($showAll) {
-            $this->info("   Total Users: {$users->count()}");
-            $this->info("   Admin Users: $adminCount");
-            $this->info("   Regular Users: $userCount");
-        } else {
-            $this->info("   Admin Users: $adminCount");
-        }
-        $this->info("   Verified Users: $verifiedCount");
+        $this->info("   Total Admin Accounts: {$admins->count()}");
+        $this->info("   Verified Accounts: $verifiedCount");
 
         // Show helpful commands
         $this->info('');
         $this->info('💡 Helpful Commands:');
-        $this->info('   php artisan admin:create          - Create new admin user');
-        if (!$showAll) {
-            $this->info('   php artisan admin:list --all      - Show all users');
-        }
+        $this->info('   php artisan admin:create          - Create new admin account');
+        $this->info('   php artisan admin:delete          - Delete an admin account');
 
         return 0;
     }

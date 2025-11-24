@@ -1,13 +1,14 @@
 <?php
 
+use App\Models\Admin;
 use App\Models\Category;
 use App\Models\Item;
 use App\Models\User;
 use Illuminate\Support\Facades\Notification;
 
 beforeEach(function () {
-  $this->admin = User::factory()->create(['role' => 'admin']);
-  $this->user = User::factory()->create(['role' => 'user']);
+  $this->admin = Admin::factory()->create();
+  $this->user = User::factory()->create();
   $this->category = Category::factory()->create();
 
   Notification::fake();
@@ -15,7 +16,7 @@ beforeEach(function () {
 
 describe('Admin Dashboard Access', function () {
   it('allows admin to access dashboard', function () {
-    $response = $this->actingAs($this->admin)
+    $response = $this->actingAs($this->admin, 'admin')
       ->get(route('admin.dashboard'));
 
     $response->assertOk();
@@ -26,13 +27,13 @@ describe('Admin Dashboard Access', function () {
     $response = $this->actingAs($this->user)
       ->get(route('admin.dashboard'));
 
-    $response->assertForbidden();
+    $response->assertRedirect(route('admin.login'));
   });
 
   it('redirects unauthenticated users to login', function () {
     $response = $this->get(route('admin.dashboard'));
 
-    $response->assertRedirect(route('login'));
+    $response->assertRedirect(route('admin.login'));
   });
 
   it('shows dashboard statistics', function () {
@@ -47,7 +48,7 @@ describe('Admin Dashboard Access', function () {
       'category_id' => $this->category->id,
     ]);
 
-    $response = $this->actingAs($this->admin)
+    $response = $this->actingAs($this->admin, 'admin')
       ->get(route('admin.dashboard'));
 
     $response->assertOk();
@@ -229,7 +230,7 @@ describe('Item Verification Process', function () {
         'admin_notes' => 'Should not work',
       ]);
 
-    $response->assertForbidden();
+    $response->assertRedirect(route('admin.login'));
 
     $item->refresh();
     expect($item->status)->toBe('pending');
